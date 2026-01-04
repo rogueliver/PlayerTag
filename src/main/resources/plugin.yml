@@ -1,0 +1,4 @@
+name: playertag
+version: '1.0-SNAPSHOT'
+main: com.rogueliver.playertag.PlayerTag
+api-version: '1.21'

@@ -1,0 +1,15 @@
+# Config version. To check the latest version, check out https://github.com/rogueliver/playertag
+config-version: 1
+
+# The format of the ping in chat.
+# You can use MiniMessage tags (e.g. <red>, <bold>, <gradient:red:blue>)
+# or Legacy color codes (e.g. &c, &l).
+# Placeholder: <name> will be replaced with the mentioned player's name.
+ping-format: "<gradient:aqua:blue>@<name></gradient>"
+
+# Sound settings
+sound:
+  enabled: true
+  type: "block.note_block.pling"
+  volume: 1.0
+  pitch: 2.0
