@@ -26,12 +26,15 @@ public class ChatListener implements Listener {
 
     private final PlayerTag plugin;
     private final ConfigManager configManager;
-    private static final Pattern MENTION_PATTERN = Pattern.compile("@(\\w+)");
+    private static final Pattern MENTION_PATTERN_WITH_AT = Pattern.compile("@(\\w+)");
+    private static final Pattern MENTION_PATTERN_NO_AT = Pattern.compile("\\b(\\w+)\\b");
 
     @EventHandler
     public void onChat(AsyncChatEvent event) {
         String message = PlainTextComponentSerializer.plainText().serialize(event.message());
-        Matcher matcher = MENTION_PATTERN.matcher(message);
+        
+        Pattern pattern = configManager.isTagWithoutAt() ? MENTION_PATTERN_NO_AT : MENTION_PATTERN_WITH_AT;
+        Matcher matcher = pattern.matcher(message);
         
         Component newMessage = event.message();
         boolean mentioned = false;
@@ -39,10 +42,11 @@ public class ChatListener implements Listener {
         while (matcher.find()) {
             String potentialName = matcher.group(1);
             
-            Player target = Bukkit.getOnlinePlayers().stream()
-                    .filter(p -> p.getName().equalsIgnoreCase(potentialName))
-                    .findFirst()
-                    .orElse(null);
+            // ignore short names
+            if (potentialName.length() < 3) continue;
+
+            // getPlayerExact is thread-safe (saladedecaprium if you see this, your welcome :D)
+            Player target = Bukkit.getPlayerExact(potentialName);
 
             if (target != null) {
                 mentioned = true;
@@ -68,7 +72,6 @@ public class ChatListener implements Listener {
                     float pitch = configManager.getSoundPitch();
                     
                     if (sound != null) {
-                        // Play sound to the target player
                         target.playSound(target.getLocation(), sound, volume, pitch);
                     }
                 }

@@ -19,6 +19,7 @@ public class ConfigManager {
     private YamlDocument config;
 
     private String pingFormat;
+    private boolean tagWithoutAt;
     private boolean soundEnabled;
     private String soundType;
     private float soundVolume;
@@ -51,6 +52,7 @@ public class ConfigManager {
 
     public void reloadValues() {
         this.pingFormat = config.getString("ping-format", "<gradient:aqua:blue>@<name></gradient>");
+        this.tagWithoutAt = config.getBoolean("tag-without-at", true);
         this.soundEnabled = config.getBoolean("sound.enabled", true);
         this.soundType = config.getString("sound.type", "block.note_block.pling");
         this.soundVolume = config.getFloat("sound.volume", 1.0f);
